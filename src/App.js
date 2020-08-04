@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './animation.css'
 
 // Components
 import Formulaire from "./components/Formulaire";
@@ -7,6 +8,12 @@ import Message from "./components/Message";
 
 // Firebase
 import base from './base';
+
+// Animation
+import {
+    CSSTransition,
+    TransitionGroup
+} from "react-transition-group";
 
 class App extends React.Component
 {
@@ -16,10 +23,12 @@ class App extends React.Component
             messages: {},
             pseudo: this.props.match.params.pseudo,
         }
+        // Create messages ref on the div
+        this.messageRef = React.createRef()
     }
 
-    // Create messages ref on the div
-    messageRef = React.createRef()
+
+
 
     addMessage = (message) => {
         const messages = { ... this.state.messages }
@@ -53,21 +62,26 @@ class App extends React.Component
 
     render() {
         const messages = Object.keys(this.state.messages).map((key, index) => (
-            <Message
+            <CSSTransition
                 key={index}
-                isUser={this.isUser}
-                pseudo={this.state.messages[key].pseudo}
-                message={this.state.messages[key].message}
-            />
+                timeout={200}
+                classNames={'fade'}
+            >
+                <Message
+                    isUser={this.isUser}
+                    pseudo={this.state.messages[key].pseudo}
+                    message={this.state.messages[key].message}
+                />
+            </CSSTransition>
         ));
 
         return (
             <div className={'box'}>
                 <div>
                     <div className="messages" ref={this.messageRef}>
-                        <div className="message">
+                        <TransitionGroup className="message">
                             {messages}
-                        </div>
+                        </TransitionGroup>
                     </div>
                     <Formulaire
                         length={140}
