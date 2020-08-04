@@ -18,12 +18,20 @@ class App extends React.Component
         }
     }
 
+    // Create messages ref on the div
+    messageRef = React.createRef()
+
     addMessage = (message) => {
         const messages = { ... this.state.messages }
         messages[`message-${Date.now()}`] = message;
         this.setState({
             messages: messages
         })
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const ref = this.messageRef.current;
+        ref.scrollTop = ref.scrollHeight;
     }
 
     componentDidMount() {
@@ -42,12 +50,10 @@ class App extends React.Component
             />
         ));
 
-        console.log(messages);
-
         return (
             <div className={'box'}>
                 <div>
-                    <div className="messages">
+                    <div className="messages" ref={this.messageRef}>
                         <div className="message">
                             {messages}
                         </div>
