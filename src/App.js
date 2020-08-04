@@ -1,7 +1,12 @@
 import React from 'react';
 import './App.css';
+
+// Components
 import Formulaire from "./components/Formulaire";
 import Message from "./components/Message";
+
+// Firebase
+import base from './base';
 
 class App extends React.Component
 {
@@ -18,6 +23,13 @@ class App extends React.Component
         messages[`message-${Date.now()}`] = message;
         this.setState({
             messages: messages
+        })
+    }
+
+    componentDidMount() {
+        base.syncState('/', {
+            context: this,
+            state: 'messages'
         })
     }
 
