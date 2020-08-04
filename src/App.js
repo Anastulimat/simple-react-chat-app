@@ -23,13 +23,22 @@ class App extends React.Component
 
 
     render() {
+        const messages = Object.keys(this.state.messages).map((key, index) => (
+            <Message key={index}
+                pseudo={this.state.messages[key].pseudo}
+                message={this.state.messages[key].message}
+            />
+        ));
+
+        console.log(messages);
+
         return (
             <div className={'box'}>
                 <div>
                     <div className="messages">
-                        <Message/>
-                        <Message/>
-                        <Message/>
+                        <div className="message">
+                            {messages}
+                        </div>
                     </div>
                     <Formulaire
                         length={140}
